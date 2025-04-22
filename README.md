@@ -8,7 +8,7 @@ This project utilizes an Azure environment, where I created and actively respond
 These 3 alerts included the following: 
 - [Brute Force Attempts](#brute-force-attemps)
 - [PowerShell Suspicious Web Requests](#powershell-suspicious-web-requests)
-- [Impossible Travel](#impossible-travel)
+- [Potential Impossible Travel](#potential-impossible-travel)
 
 ---
 
@@ -27,7 +27,7 @@ Description:
 ---
 Detection: 
 
-For this rule, we received a single alert that grouped 37 seperate events together in this shared environment: 
+For this rule, I received a single alert that grouped 37 seperate events together in this shared environment: 
 
 ![image](https://github.com/user-attachments/assets/80e07c7f-d2bc-4590-9085-e4cbfafa54cb)
 
@@ -37,9 +37,31 @@ For this rule, we received a single alert that grouped 37 seperate events togeth
 
 ### PowerShell Suspicious Web Requests
 
-
-
+Rule Query: 
+```
+DeviceProcessEvents
+| where FileName == "powershell.exe"
+| where InitiatingProcessCommandLine contains "Invoke-WebRequest"
+| order by TimeGenerated
+```
+Description:
 
 ---
+Detection: 
 
-### Impossible Travel
+For this rule, I received 
+
+### Potential Impossible Travel
+
+Rule Query: 
+```
+let TimePeriodThreshold = timespan(2d);
+let NumberOfDifferentLocationsAllowed = 2;
+SigninLogs
+| where TimeGenerated > ago(TimePeriodThreshold)
+| summarize Count = count() by UserPrincipalName, UserId, City = tostring(parse_json(LocationDetails).city), State = tostring(parse_json(LocationDetails).state), Country = tostring(parse_json(LocationDetails).countryOrRegion)
+| project UserPrincipalName, UserId, City, State, Country
+| summarize PotentialImpossibleTravelInstances = count() by UserPrincipalName, UserId
+| where PotentialImpossibleTravelInstances > NumberOfDifferentLocationsAllowed
+```
+
