@@ -49,7 +49,11 @@ Description:
 ---
 Detection: 
 
-For this rule, I received 
+For this rule, I received 1 alert containing 37 events: 
+
+![image](https://github.com/user-attachments/assets/55a02e0d-3f81-4cf8-bde2-665433953e86)
+
+
 
 ### Potential Impossible Travel
 
@@ -67,6 +71,7 @@ SigninLogs
 Detection: 
 
 For this query, I received a single alert and event within the last 3 days of launching this alert: 
+
 ![image](https://github.com/user-attachments/assets/d6d8c2a3-c6e6-4cb4-aef2-4e5c45c801bd)
 
 
