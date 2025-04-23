@@ -31,6 +31,31 @@ For this rule, I received a single alert that grouped 37 seperate events togethe
 
 ![image](https://github.com/user-attachments/assets/80e07c7f-d2bc-4590-9085-e4cbfafa54cb)
 
+All 37 events have been investigated, but I will be focusing on a single entity for this lab with the device name: "vm-final-lab-sc"
+
+![image](https://github.com/user-attachments/assets/65bb8cb9-12ca-4f1a-85a1-380feb0df2c0)
+The Edwin-Brute Force Detection rule triggered the "vm-final-lab-sc" device a total of 297 times from 3 remote IP addresses.
+
+---
+
+Analysis: 
+
+First, I looked into the two external IP addresses of "122.231.145.189" and "4.240.63.212". I increased the time range and searched for any successful login attemps. 
+![image](https://github.com/user-attachments/assets/2184eb8d-440e-4a6a-89ef-61857359a32f)
+
+No successful logins were found, indicating there were no successful logins from these malicious brute force attempts. 
+
+Next, I will investigate the local IP with 66 failed attempts. 
+![image](https://github.com/user-attachments/assets/d8d47dd2-8221-43c0-a652-128352798f85)
+
+This query shows that there were almost 1500 successful sign in attempts within the last 7 days. The RemoteDeviceName of "local-scan-engi" may indicate a vulnerability scan from Tenable was conducted on this machine. 
+I contacted the owner of "vm-final-lab-sc" and confirmed they entered incorrect credentials for their credentialed scans that resulted in those failed login attempts. 
+
+Conclusion: 
+
+After investigating the three suspicious remote ip addresses, there were no malicious successful login attempts on the "vm-final-lab-sc" device. 
+Next steps would include running an antivirus scan as a precaution, escalating this ticket to have the remote IP addresses of "122.231.145.189" and "4.240.63.212" blocked, and to limit the number of failed login attempts. 
+
 
 
 
@@ -52,7 +77,6 @@ Detection:
 For this rule, I received 1 alert containing 37 events: 
 
 ![image](https://github.com/user-attachments/assets/55a02e0d-3f81-4cf8-bde2-665433953e86)
-
 
 
 ### Potential Impossible Travel
