@@ -122,6 +122,16 @@ For this query, I received a single alert and event within the last 3 days of la
 
 ![image](https://github.com/user-attachments/assets/1d4260a4-3fb4-462f-9db2-b2f6a004e835)
 
+Using the UserPrincipalName of the single event, I first expanded the search to 7 days. Then I ran a query that projects the City, State, and Country for the UserPrincipalName. This query resulted in 3 distinct locations: [(San Jose, California), (Portland, Oregan), (Los Angeles, California)]. 
+
 ![image](https://github.com/user-attachments/assets/4822b031-2a64-4c03-9ebc-aef27be0a0aa)
+
+While these geographic locations are not impossible to travel over 7 days, they are far enough to warrant asking the user for confirmation of these logins.
+
+---
+
+Next Steps:
+
+I questioned the user about these logins and was confirmed these were legitimate logins. Since these were legitimate logins, I simply resolved the alert. 
 
 
