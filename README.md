@@ -77,7 +77,29 @@ Detection:
 For this rule, I received 1 alert containing 37 events: 
 
 ![image](https://github.com/user-attachments/assets/55a02e0d-3f81-4cf8-bde2-665433953e86)
+I will be investigating a single device with the name of "agvm"
 
+---
+Analysis: 
+
+![image](https://github.com/user-attachments/assets/3ec04363-c654-44a1-aa73-624abb6cdbe3)
+
+4 potentially malicous powershell scripts were invoked from a github page and downloaded to the machines C:\programdata folder.
+![image](https://github.com/user-attachments/assets/8f839734-d74c-41aa-b9b4-2c7ec022ba65)
+
+Based on the names of the scripts, the attacker potentially is trying to scan the network for open ports (portscan.ps1), perform possible ransomware activities (pwncrypt.ps1), and to exfiltrate data from the machine (exfiltratedata.ps1). 
+
+Next I queried to verify if these malicious powershell scripts were executed on the device based on the filename. 
+![image](https://github.com/user-attachments/assets/872139f5-b88b-46b7-a5c6-f0139fce1c94)
+![image](https://github.com/user-attachments/assets/858ac2d1-42f9-4757-8e41-b0335faea5d9)
+
+These results indicate that all 4 malicous powershell scripts were executed on "agvm". 
+
+---
+Next Steps: 
+
+I have isolated this machine and ran an antivirus scan.  
+...
 
 ### Potential Impossible Travel
 
