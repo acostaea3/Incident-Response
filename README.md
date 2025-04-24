@@ -23,42 +23,43 @@ DeviceLogonEvents
 | where EventCount >= 10
 | order by EventCount
 ```
-##### Description: 
+#### Description: 
+
+This query analyzes the DeviceLogonEvents log to identify failed login attempts within the past 5 hours. It then aggregates the data by RemoteIP address, highlighting those with 10 or more failed authentication attempts during this time window.
 
 ---
 #### Detection: 
 
-##### For this rule, I received a single alert that grouped 37 seperate events together in this shared environment: 
+For this rule, I received a single alert that grouped 37 seperate events together in this shared environment: 
 
 <img width="700" src="https://github.com/user-attachments/assets/80e07c7f-d2bc-4590-9085-e4cbfafa54cb">
 
-##### All 37 events have been investigated, but I will be focusing on a single entity for this lab with the device name: "vm-final-lab-sc"
+All 37 events have been investigated, but I will be focusing on a single entity for this lab with the device name: "vm-final-lab-sc"
 
 <img width="700" src="https://github.com/user-attachments/assets/65bb8cb9-12ca-4f1a-85a1-380feb0df2c0">
 
-##### The Edwin-Brute Force Detection rule triggered the "vm-final-lab-sc" device a total of 297 times from 3 remote IP addresses.
+The Edwin-Brute Force Detection rule triggered the "vm-final-lab-sc" device a total of 297 times from 3 remote IP addresses.
 
 ---
 
 #### Analysis: 
 
-##### First, I looked into the two external IP addresses of "122.231.145.189" and "4.240.63.212". I increased the time range and searched for any successful login attemps. 
+First, I looked into the two external IP addresses of "122.231.145.189" and "4.240.63.212". I increased the time range and searched for any successful login attemps. 
 
 <img width="700" src="https://github.com/user-attachments/assets/2184eb8d-440e-4a6a-89ef-61857359a32f">
 
-##### No successful logins were found, indicating there were no successful logins from these malicious brute force attempts. 
+No successful logins were found, indicating there were no successful logins from these malicious brute force attempts. 
 
-##### Next, I will investigate the local IP with 66 failed attempts. 
+Next, I investigated the local IP of 10.0.0.8 with 66 failed attempts. 
 
 <img width="700" src="https://github.com/user-attachments/assets/d8d47dd2-8221-43c0-a652-128352798f85">
 
-##### This query shows that there were almost 1500 successful sign in attempts within the last 7 days. The RemoteDeviceName of "local-scan-engi" may indicate a vulnerability scan from Tenable was conducted on this machine. 
-##### I contacted the owner of "vm-final-lab-sc" and confirmed they entered incorrect credentials for their credentialed scans that resulted in those failed login attempts. 
+This query shows that there were almost 1500 successful sign in attempts within the last 7 days. The RemoteDeviceName of "local-scan-engi" may indicate a vulnerability scan from Tenable was conducted on this machine. I contacted the owner of "vm-final-lab-sc" and confirmed they entered incorrect credentials for their credentialed scans that resulted in those failed login attempts. 
 
 #### Conclusion: 
 
-##### After investigating the three suspicious remote ip addresses, there were no malicious successful login attempts on the "vm-final-lab-sc" device. 
-##### Next steps would include running an antivirus scan as a precaution, escalating this ticket to have the remote IP addresses of "122.231.145.189" and "4.240.63.212" blocked, and to limit the number of failed login attempts. 
+After investigating the three suspicious remote ip addresses, there were no malicious successful login attempts on the "vm-final-lab-sc" device. 
+Next steps would include running an antivirus scan as a precaution, escalating this ticket to have the remote IP addresses of "122.231.145.189" and "4.240.63.212" blocked, and to limit the number of failed login attempts on the domain. 
 
 
 ---
@@ -74,16 +75,18 @@ DeviceProcessEvents
 | where InitiatingProcessCommandLine contains "Invoke-WebRequest"
 | order by TimeGenerated
 ```
-##### Description:
+#### Description:
+
+This query reviews DeviceProcessEvents to find instances where powershell.exe was run with the Invoke-WebRequest command. This helps identify activity to download potentially malicious files to a victim's machine.
 
 ---
 #### Detection: 
 
-##### For this rule, I received 1 alert containing 37 events: 
+For this rule, I received 1 alert containing 37 events: 
 
 <img width="700" src="https://github.com/user-attachments/assets/55a02e0d-3f81-4cf8-bde2-665433953e86">
 
-##### I will be investigating a single device with the name of "agvm"
+I will be investigating a single device with the name of "agvm"
 
 ---
 #### Analysis: 
@@ -101,13 +104,15 @@ DeviceProcessEvents
 <img width="700" src="https://github.com/user-attachments/assets/872139f5-b88b-46b7-a5c6-f0139fce1c94">
 <img width="700" src="https://github.com/user-attachments/assets/858ac2d1-42f9-4757-8e41-b0335faea5d9">
 
-##### These results indicate that all 4 malicous powershell scripts were executed on "agvm". 
+These results indicate that all 4 malicous powershell scripts were executed on "agvm". 
 
 ---
 #### Next Steps: 
 
-##### I have isolated this machine and ran an antivirus scan.  
-...
+Since this is a shared environment and I do not claim ownership to this virtual machine, next steps would involve escalating this incident to have the following completed/remediated:
+- Isolate the machine
+- Run an antivirus scan
+- Determine if PowerShell should be blocked to prevent similar malicious activity.
 
 ### Potential Impossible Travel
 
@@ -126,22 +131,26 @@ SigninLogs
 ```
 #### Detection: 
 
-##### For this query, I received a single alert and event within the last 3 days of launching this alert: 
+This query reviews SignInLogs to find potential impossible travel. It extracts geographic location data in the LocationDetails field and will project the UserPrincipal name of users who have authenticated from more than two distinct locations within a 2 day period. 
+
+---
+
+For this query, I received a single alert and event within the last 3 days of launching this alert: 
 
 <img width="700" src="https://github.com/user-attachments/assets/d6d8c2a3-c6e6-4cb4-aef2-4e5c45c801bd">
 
 <img width="700" src="https://github.com/user-attachments/assets/1d4260a4-3fb4-462f-9db2-b2f6a004e835">
 
-##### Using the UserPrincipalName of the single event, I first expanded the search to 7 days. Then I ran a query that projects the City, State, and Country for the UserPrincipalName. This query resulted in 3 distinct locations: [(San Jose, California), (Portland, Oregan), (Los Angeles, California)]. 
+Using the UserPrincipalName of the single event, I first expanded the search to 7 days. Then I ran a query that projects the City, State, and Country for the UserPrincipalName. This query resulted in 3 distinct locations: [(San Jose, California), (Portland, Oregan), (Los Angeles, California)]. 
 
 <img width="700" src="https://github.com/user-attachments/assets/4822b031-2a64-4c03-9ebc-aef27be0a0aa">
 
-##### While these geographic locations are not impossible to travel over 7 days, they are far enough to warrant asking the user for confirmation of these logins.
+While these geographic locations are not impossible to travel over 7 days, they are far enough to warrant asking the user for confirmation of these logins.
 
 ---
 
 #### Next Steps:
 
-##### I questioned the user about these logins and was confirmed these were legitimate logins. Since these were legitimate logins, I simply resolved the alert. 
+I questioned the user about these logins and was confirmed these were legitimate logins. Since these were legitimate logins, I simply resolved the alert. 
 
 
