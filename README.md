@@ -97,9 +97,9 @@ I will be investigating a single device with the name of "agvm"
 
 <img width="700" src="https://github.com/user-attachments/assets/8f839734-d74c-41aa-b9b4-2c7ec022ba65">
 
-##### Based on the names of the scripts, the attacker potentially is trying to scan the network for open ports (portscan.ps1), perform possible ransomware activities (pwncrypt.ps1), and to exfiltrate data from the machine (exfiltratedata.ps1). 
+Based on the names of the scripts, the attacker potentially is trying to scan the network for open ports (portscan.ps1), perform possible ransomware activities (pwncrypt.ps1), and to exfiltrate data from the machine (exfiltratedata.ps1). 
 
-##### Next I queried to verify if these malicious powershell scripts were executed on the device based on the filename. 
+Next I queried to verify if these malicious powershell scripts were executed on the device based on the filename. 
 
 <img width="700" src="https://github.com/user-attachments/assets/872139f5-b88b-46b7-a5c6-f0139fce1c94">
 <img width="700" src="https://github.com/user-attachments/assets/858ac2d1-42f9-4757-8e41-b0335faea5d9">
